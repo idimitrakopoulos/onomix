@@ -10,8 +10,6 @@ import logging
 import logging.config
 from ConfigParser import RawConfigParser
 
-from jira import JIRA
-
 from util.fun_stuff import SpinCursor
 from util.color_formatter import ColorFormatter
 
@@ -201,6 +199,49 @@ class PropertyReader(object):
         self.version = read_property_from_file("version", self.script_name, self.manifest_file)
         self.revision = read_property_from_file("revision", self.script_name, self.manifest_file)
         self.build_date = read_property_from_file("buildDate", self.script_name, self.manifest_file)
+
+
+def permutation_atindex(_int, _set, length):
+    """
+    Return the permutation at index '_int' for itemgetter '_set'
+    with length 'length'.
+    """
+    items = []
+    strLength = len(_set)
+    index = _int % strLength
+    items.append(_set[index])
+
+    for n in xrange(1, length, 1):
+        _int //= strLength
+        index = _int % strLength
+        items.append(_set[index])
+
+    return items
+
+
+class PermutationIterator:
+    """
+    A class that can iterate over possible permuations
+    of the given 'iterable' and 'length' argument.
+    """
+
+    def __init__(self, iterable, length):
+        self.length = length
+        self.current = 0
+        self.max = len(iterable) ** length
+        self.iterable = iterable
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.current >= self.max:
+            raise StopIteration
+
+        try:
+            return permutation_atindex(self.current, self.iterable, self.length)
+        finally:
+            self.current += 1
 
 
 # Change working directory in case someone executed the script outside the script's directory
