@@ -1,8 +1,9 @@
 from optparse import OptionParser, OptionGroup
 import sys
-import getpass
 
-from util.toolkit import check_file_exists, properties, log, logging
+from util.toolkit import properties, log, logging
+
+mandatory_options = ['tld', 'length', 'workers']
 
 # Init Optparser
 parser = OptionParser(
@@ -12,6 +13,7 @@ parser = OptionParser(
 mainOptionsGroup = OptionGroup(parser, "Main Options", "(Main script options)")
 mainOptionsGroup.add_option("-l", "--length", dest="length", help="Domain name length", metavar="<length>")
 mainOptionsGroup.add_option("-t", "--tld", dest="tld", help="TLD to search in", metavar="<tld>")
+mainOptionsGroup.add_option("-w", "--workers", dest="workers", help="Workers (threads) to be used", metavar="<workers>")
 
 parser.add_option_group(mainOptionsGroup)
 
@@ -35,13 +37,13 @@ parser.add_option_group(loggingOptionsGroup)
 # Parse arguments
 (options, args) = parser.parse_args()
 
-#
-# # Make sure all mandatory options are provided
-# for m in mandatory_options:
-#     if not options.__dict__[m]:
-#         log.critical("Mandatory option '" + m + "' is missing\n")
-#         parser.print_help()
-#         sys.exit()
+
+# Make sure all mandatory options are provided
+for m in mandatory_options:
+    if not options.__dict__[m]:
+        log.critical("Mandatory option '" + m + "' is missing\n")
+        parser.print_help()
+        sys.exit()
 
 
 # Set logging level

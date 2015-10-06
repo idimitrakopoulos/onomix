@@ -16,22 +16,25 @@ if __name__ == '__main__':
         return len(d)
 
 
-    def run_name(domain_name):
+    def run_name(dn):
         try:
-            q = whois.query(domain_name)
+            q = whois.query(dn)
             print q
-            log.info("[" + str(os.getpid()) + "] " + domain_name + " [TAKEN]")
-        except (Exception):
-            log.info("[" + str(os.getpid()) + "] " + domain_name + " [FREE]")
+            log.info("[" + str(os.getpid()) + "] " + dn + " [TAKEN]")
+        except Exception:
+            log.info("[" + str(os.getpid()) + "] " + dn + " [FREE]")
 
 
     log.info("Permutations are " + str(calculate_permutations(ascii_lowercase, int(parser.options.length))))
 
-    p = Pool(10)
+    # Setup pool
+    p = Pool(int(parser.options.workers))
+
     for e in PermutationIterator(ascii_lowercase, int(parser.options.length)):
         domain_name = str("".join(e) + parser.options.tld)
         result = None
 
         log.debug("Trying: " + domain_name)
 
+        # Give it to an available worker
         p.apply(run_name, args=(domain_name,))
