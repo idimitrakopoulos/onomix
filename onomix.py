@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import os
 from multiprocessing import Pool
 from string import ascii_lowercase
