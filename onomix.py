@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-import os
 from multiprocessing import Pool
 from string import ascii_lowercase
 import itertools
@@ -11,20 +10,19 @@ from util.toolkit import log, PermutationIterator
 
 if __name__ == '__main__':
     def calculate_permutations(character_list, length):
-        d = []
+        counter = 0
         for p in itertools.permutations(character_list, length):
-            d.append(''.join(p))
-        log.debug(d)
-        return len(d)
+            counter += 1
+
+        return counter
 
 
     def run_name(dn):
         try:
-            q = whois.query(dn)
-            print q
-            log.info("[" + str(os.getpid()) + "] " + dn + " [TAKEN]")
+            whois.query(dn)
+            log.debug("[TAKEN] " + dn)
         except Exception:
-            log.info("[" + str(os.getpid()) + "] " + dn + " [FREE]")
+            log.info("[FREE] " + dn)
 
 
     log.info("Permutations are " + str(calculate_permutations(ascii_lowercase, int(parser.options.length))))
