@@ -6,9 +6,13 @@ import itertools
 import whois
 
 import util.opt_parser as parser
-from util.toolkit import log, PermutationIterator
+from util.toolkit import log, PermutationIterator, start_busy_indicator, stop_busy_indicator
 
 if __name__ == '__main__':
+
+    # Begin the Busy indicator
+    bi = start_busy_indicator("")
+
     def calculate_permutations(character_list, length):
         counter = 0
         for p in itertools.permutations(character_list, length):
@@ -42,3 +46,10 @@ if __name__ == '__main__':
 
         except KeyboardInterrupt:
             p.terminate()
+
+
+    # End the busy indicator
+    stop_busy_indicator(bi)
+
+    # Salute!
+    log.info("Bye bye! :-)")

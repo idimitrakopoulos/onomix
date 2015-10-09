@@ -49,5 +49,4 @@ for m in mandatory_options:
 # Set logging level
 if options.verbose == 1:
     log.root.handlers[0].setLevel(logging.DEBUG)
-elif options.verbose == 2:
-    log.root.handlers[0].setLevel(logging.DEBUG) # same logging level as verbose BUT its value also controls the logIfVerbose method
+    logging.getLogger(properties.default_logger).handlers[0].setLevel(logging.DEBUG)
