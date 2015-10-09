@@ -14,6 +14,7 @@ if __name__ == '__main__':
         d = []
         for p in itertools.permutations(character_list, length):
             d.append(''.join(p))
+        log.debug(d)
         return len(d)
 
 
@@ -37,5 +38,9 @@ if __name__ == '__main__':
 
         log.debug("Trying: " + domain_name)
 
-        # Give it to an available worker
-        p.apply(run_name, args=(domain_name,))
+        try:
+            # Give it to an available worker
+            p.apply(run_name, args=(domain_name,))
+
+        except KeyboardInterrupt:
+            p.terminate()
